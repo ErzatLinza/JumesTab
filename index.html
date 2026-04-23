@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JumisTab — Студенттік Жұмыс Платформасы</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--sky:#0EA5E9;--gold:#F59E0B;--gold-light:#FCD34D;--green:#22C55E;--red:#EF4444;--dark:#0A0F1E;--darker:#060A14;--card:#0D1526;--cb:rgba(14,165,233,0.15);--text:#E8EDF5;--muted:#7A8BA8;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--darker);color:var(--text);overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:0.3;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 4rem;background:rgba(6,10,20,.9);backdrop-filter:blur(20px);border-bottom:1px solid rgba(14,165,233,.1);animation:fadeDown .8s ease both;}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+.logo{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;background:linear-gradient(135deg,var(--sky),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.8rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;transition:color .3s;}
+.nav-links a:hover{color:var(--sky);}
+.nav-cta{background:linear-gradient(135deg,var(--sky),#0284C7);color:#fff;border:none;padding:.55rem 1.4rem;border-radius:50px;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .3s;}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(14,165,233,.4);}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:8rem 4rem 4rem;text-align:center;}
+.hglow{position:absolute;width:800px;height:800px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(14,165,233,.11) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);animation:pg 4s ease-in-out infinite;}
+.hglow2{background:radial-gradient(circle,rgba(245,158,11,.07) 0%,transparent 70%);width:600px;height:600px;top:40%;left:60%;animation:pg 6s ease-in-out infinite reverse;}
+@keyframes pg{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.12)}}
+.orb{position:absolute;border-radius:50%;background:linear-gradient(135deg,var(--sky),var(--gold));opacity:.06;animation:fo 8s ease-in-out infinite;}
+.o1{width:280px;height:280px;top:10%;left:5%;}
+.o2{width:180px;height:180px;top:60%;right:8%;animation-delay:2s;}
+.o3{width:120px;height:120px;bottom:15%;left:22%;animation-delay:4s;}
+@keyframes fo{0%,100%{transform:translateY(0)}50%{transform:translateY(-30px)}}
+.grid-bg{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(14,165,233,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(14,165,233,.04) 1px,transparent 1px);background-size:60px 60px;}
+.hc{position:relative;z-index:2;max-width:900px;}
+.hbadge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(14,165,233,.1);border:1px solid rgba(14,165,233,.3);padding:.4rem 1.2rem;border-radius:50px;font-size:.73rem;font-weight:700;color:var(--sky);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2rem;animation:fu .8s .2s ease both;}
+.bdot{width:6px;height:6px;background:var(--sky);border-radius:50%;animation:blink 1.5s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.htitle{font-family:'Playfair Display',serif;font-size:clamp(3rem,7vw,5.5rem);font-weight:900;line-height:1.05;letter-spacing:-2px;margin-bottom:1.5rem;animation:fu .8s .3s ease both;}
+.hl{background:linear-gradient(135deg,var(--sky),var(--gold-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hsub{font-size:1.1rem;color:var(--muted);line-height:1.7;max-width:640px;margin:0 auto 2.5rem;animation:fu .8s .4s ease both;}
+.hbtns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;animation:fu .8s .5s ease both;}
+.btnp{background:linear-gradient(135deg,var(--sky),#0284C7);color:#fff;padding:.85rem 2rem;border-radius:50px;font-weight:700;font-size:.92rem;border:none;cursor:pointer;transition:all .3s;box-shadow:0 4px 24px rgba(14,165,233,.35);}
+.btnp:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(14,165,233,.5);}
+.btno{background:transparent;color:var(--text);border:1px solid rgba(255,255,255,.15);padding:.85rem 2rem;border-radius:50px;font-weight:600;font-size:.92rem;cursor:pointer;transition:all .3s;}
+.btno:hover{border-color:var(--sky);color:var(--sky);transform:translateY(-3px);}
+.hstats{display:flex;gap:3rem;justify-content:center;margin-top:4rem;animation:fu .8s .6s ease both;flex-wrap:wrap;}
+.st{text-align:center;}
+.sn{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,var(--sky),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.sl{font-size:.73rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:.2rem;}
+@keyframes fu{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+/* SECTION */
+.sec{padding:6rem 4rem;max-width:1200px;margin:0 auto;}
+.divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(14,165,233,.3),transparent);}
+.slabel{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--sky);background:rgba(14,165,233,.1);border:1px solid rgba(14,165,233,.25);padding:.3rem 1rem;border-radius:50px;margin-bottom:1rem;}
+.stitle{font-family:'Playfair Display',serif;font-size:clamp(1.9rem,4vw,3rem);font-weight:900;line-height:1.15;letter-spacing:-1px;margin-bottom:1.2rem;}
+.sdesc{color:var(--muted);font-size:1rem;line-height:1.75;max-width:620px;}
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* PROBLEM */
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2.5rem;}
+.pc{background:var(--card);border:1px solid var(--cb);border-radius:16px;padding:1.8rem;transition:all .3s;}
+.pc:hover{transform:translateY(-6px);border-color:rgba(14,165,233,.4);box-shadow:0 20px 50px rgba(0,0,0,.3);}
+.pci{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:1rem;}
+.ir{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);}
+.io{background:rgba(249,115,22,.12);border:1px solid rgba(249,115,22,.25);}
+.iy{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);}
+.ip{background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.25);}
+.pc h3{font-size:1rem;font-weight:700;margin-bottom:.5rem;}
+.pc p{color:var(--muted);font-size:.87rem;line-height:1.65;}
+.ph{background:linear-gradient(135deg,rgba(14,165,233,.05),rgba(245,158,11,.05));border:1px solid rgba(14,165,233,.2);border-radius:20px;padding:2rem 2.5rem;margin-top:1.5rem;grid-column:1/-1;}
+.ph-t{font-size:.75rem;color:var(--sky);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:1rem;}
+.ph-s{display:flex;gap:3rem;flex-wrap:wrap;}
+.ph-n{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:900;color:var(--gold);line-height:1;}
+.ph-l{font-size:.78rem;color:var(--muted);margin-top:.3rem;}
+.clist{list-style:none;display:grid;gap:.8rem;margin-top:2rem;}
+.ci{display:flex;align-items:flex-start;gap:1rem;background:var(--card);border:1px solid var(--cb);padding:1.1rem 1.4rem;border-radius:12px;transition:border-color .3s;}
+.ci:hover{border-color:rgba(14,165,233,.35);}
+.cn{flex-shrink:0;width:28px;height:28px;background:linear-gradient(135deg,var(--sky),#0284C7);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:#fff;}
+.ct strong{display:block;font-size:.92rem;margin-bottom:.2rem;}
+.ct span{font-size:.83rem;color:var(--muted);line-height:1.5;}
+
+/* SOLUTION */
+.sol-wrap{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:start;margin-top:3rem;}
+.sol-pills{display:flex;flex-direction:column;gap:1rem;}
+.spill{background:var(--card);border:1px solid var(--cb);border-radius:16px;padding:1.4rem 1.6rem;display:flex;align-items:flex-start;gap:1.1rem;transition:all .3s;cursor:pointer;}
+.spill:hover{border-color:rgba(14,165,233,.5);transform:translateX(6px);box-shadow:0 12px 40px rgba(0,0,0,.25);}
+.spill.active{border-color:var(--sky);background:rgba(14,165,233,.08);}
+.spill-icon{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--sky),#0284C7);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.spill-title{font-size:.98rem;font-weight:700;margin-bottom:.3rem;}
+.spill-desc{font-size:.82rem;color:var(--muted);line-height:1.55;}
+
+/* BROWSER MOCKUP */
+.browser{background:#080c18;border:1px solid rgba(14,165,233,.25);border-radius:20px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(14,165,233,.08);}
+.bbar{background:#0b0f1d;padding:.65rem 1.1rem;display:flex;align-items:center;gap:.7rem;border-bottom:1px solid rgba(14,165,233,.1);}
+.bdots{display:flex;gap:.35rem;}
+.bd{width:10px;height:10px;border-radius:50%;}
+.bd:nth-child(1){background:#EF4444;}
+.bd:nth-child(2){background:#F59E0B;}
+.bd:nth-child(3){background:#22C55E;}
+.burl{flex:1;background:rgba(14,165,233,.06);border:1px solid rgba(14,165,233,.14);border-radius:7px;padding:.28rem .8rem;font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:.35rem;}
+.burl span{color:var(--sky);}
+.abody{padding:1.1rem;height:490px;overflow:hidden;position:relative;}
+
+/* App inner */
+.anav{display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem;}
+.alogo{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:900;background:linear-gradient(135deg,var(--sky),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.atabs{display:flex;gap:.3rem;}
+.atab{padding:.22rem .6rem;border-radius:20px;font-size:.66rem;font-weight:600;cursor:pointer;border:none;transition:all .25s;font-family:'Plus Jakarta Sans',sans-serif;}
+.atab.on{background:linear-gradient(135deg,var(--sky),#0284C7);color:#fff;}
+.atab:not(.on){background:rgba(14,165,233,.08);color:var(--muted);}
+.atab:not(.on):hover{background:rgba(14,165,233,.15);color:var(--sky);}
+.asearch{background:rgba(14,165,233,.06);border:1px solid rgba(14,165,233,.18);border-radius:11px;padding:.55rem .9rem;display:flex;align-items:center;gap:.45rem;margin-bottom:.75rem;}
+.asearch input{background:transparent;border:none;outline:none;color:var(--text);font-size:.76rem;flex:1;font-family:'Plus Jakarta Sans',sans-serif;}
+.asearch input::placeholder{color:var(--muted);}
+.afilters{display:flex;gap:.35rem;margin-bottom:.9rem;flex-wrap:wrap;}
+.fchip{padding:.22rem .65rem;border-radius:20px;font-size:.64rem;font-weight:600;cursor:pointer;border:1px solid rgba(14,165,233,.18);background:transparent;color:var(--muted);transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;}
+.fchip.on{background:rgba(14,165,233,.15);color:var(--sky);border-color:var(--sky);}
+.fchip:hover{border-color:var(--sky);color:var(--sky);}
+.jlist{display:flex;flex-direction:column;gap:.55rem;overflow-y:auto;max-height:295px;padding-right:3px;}
+.jlist::-webkit-scrollbar{width:3px;}
+.jlist::-webkit-scrollbar-thumb{background:rgba(14,165,233,.3);border-radius:2px;}
+.jcard{background:rgba(255,255,255,.025);border:1px solid rgba(14,165,233,.1);border-radius:11px;padding:.85rem .95rem;cursor:pointer;transition:all .25s;position:relative;}
+.jcard:hover,.jcard.sel{border-color:rgba(14,165,233,.45);background:rgba(14,165,233,.07);transform:translateX(3px);}
+.jctop{display:flex;align-items:center;gap:.65rem;margin-bottom:.45rem;}
+.jclogo{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0;}
+.jcco{font-size:.65rem;color:var(--muted);font-weight:600;}
+.jctitle{font-size:.8rem;font-weight:700;line-height:1.3;}
+.jctags{display:flex;gap:.28rem;flex-wrap:wrap;}
+.jtag{padding:.13rem .45rem;border-radius:9px;font-size:.6rem;font-weight:700;}
+.tr{background:rgba(14,165,233,.15);color:var(--sky);}
+.tp{background:rgba(34,197,94,.12);color:#22C55E;}
+.tt{background:rgba(245,158,11,.12);color:var(--gold);}
+.th{background:rgba(168,85,247,.12);color:#A855F7;}
+.jpay{position:absolute;top:.85rem;right:.85rem;font-size:.67rem;font-weight:700;color:var(--gold);}
+
+/* Apply modal */
+.aovl{position:absolute;inset:0;background:rgba(5,8,18,.97);display:none;flex-direction:column;padding:1.1rem;z-index:10;animation:su .3s ease;}
+.aovl.show{display:flex;}
+@keyframes su{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.aoh{display:flex;justify-content:space-between;align-items:center;margin-bottom:.9rem;}
+.aot{font-size:.88rem;font-weight:700;line-height:1.3;}
+.aox{background:rgba(255,255,255,.08);border:none;color:var(--muted);width:26px;height:26px;border-radius:7px;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;}
+.aox:hover{background:rgba(239,68,68,.2);color:#EF4444;}
+.aolabel{font-size:.67rem;font-weight:700;color:var(--sky);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.28rem;margin-top:.7rem;}
+.aofield{background:rgba(14,165,233,.06);border:1px solid rgba(14,165,233,.18);border-radius:8px;padding:.48rem .75rem;font-size:.76rem;color:var(--text);width:100%;font-family:'Plus Jakarta Sans',sans-serif;resize:none;outline:none;transition:border-color .2s;}
+.aofield:focus{border-color:var(--sky);}
+.aosub{width:100%;margin-top:.9rem;background:linear-gradient(135deg,var(--sky),#0284C7);color:#fff;border:none;padding:.6rem;border-radius:9px;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .3s;font-family:'Plus Jakarta Sans',sans-serif;}
+.aosub:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(14,165,233,.4);}
+.aosucc{display:none;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;}
+.aosucc.show{display:flex;}
+.aosi{font-size:2.8rem;margin-bottom:.7rem;animation:pi .5s ease;}
+@keyframes pi{from{transform:scale(0)}to{transform:scale(1)}}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(14,165,233,.1);border-radius:20px;overflow:hidden;margin-top:3rem;}
+.step{background:var(--card);padding:2.3rem 1.8rem;position:relative;transition:background .3s;}
+.step:hover{background:rgba(13,21,38,.9);}
+.stepn{font-family:'Playfair Display',serif;font-size:3rem;font-weight:900;color:rgba(14,165,233,.1);line-height:1;position:absolute;top:1.3rem;right:1.3rem;}
+.stepi{font-size:1.6rem;margin-bottom:.9rem;}
+.step h3{font-size:.93rem;font-weight:700;margin-bottom:.45rem;}
+.step p{font-size:.81rem;color:var(--muted);line-height:1.6;}
+
+/* IMPACT */
+.igrid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem;}
+.ic{background:var(--card);border:1px solid var(--cb);border-radius:20px;padding:2.2rem;}
+.ic.big{grid-row:span 2;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(160deg,rgba(14,165,233,.13),var(--card) 60%);border-color:rgba(14,165,233,.3);}
+.ic h3{font-size:1.15rem;font-weight:700;margin-bottom:.7rem;}
+.ic p{color:var(--muted);font-size:.87rem;line-height:1.65;}
+.inum{font-family:'Playfair Display',serif;font-size:3rem;font-weight:900;color:var(--sky);line-height:1;margin-bottom:.5rem;}
+.itag{display:inline-block;font-size:.69rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.22rem .7rem;border-radius:50px;margin-bottom:.8rem;}
+.tb{background:rgba(14,165,233,.15);color:var(--sky);}
+.tg{background:rgba(245,158,11,.15);color:var(--gold);}
+.tgr{background:rgba(34,197,94,.15);color:#22C55E;}
+
+/* TEAM */
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem;}
+.tc{background:var(--card);border:1px solid var(--cb);border-radius:20px;padding:2rem;text-align:center;transition:all .3s;position:relative;overflow:hidden;}
+.tc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--sky),var(--gold));transform:scaleX(0);transition:transform .4s;}
+.tc:hover::after{transform:scaleX(1);}
+.tc:hover{transform:translateY(-8px);border-color:rgba(14,165,233,.3);box-shadow:0 20px 50px rgba(0,0,0,.3);}
+.av{width:66px;height:66px;border-radius:50%;margin:0 auto .9rem;display:flex;align-items:center;justify-content:center;font-size:1.6rem;border:2px solid rgba(14,165,233,.3);background:linear-gradient(135deg,rgba(14,165,233,.15),rgba(245,158,11,.1));}
+.tc h3{font-size:.95rem;font-weight:700;margin-bottom:.28rem;}
+.tcr{font-size:.73rem;color:var(--sky);font-weight:700;margin-bottom:.45rem;text-transform:uppercase;letter-spacing:.06em;}
+.tc p{font-size:.79rem;color:var(--muted);line-height:1.55;}
+
+/* QUIZ */
+.qwrap{background:var(--card);border:1px solid rgba(14,165,233,.2);border-radius:24px;overflow:hidden;margin-top:2.5rem;}
+.qhead{background:linear-gradient(135deg,rgba(14,165,233,.1),rgba(245,158,11,.07));padding:1.4rem 1.8rem;border-bottom:1px solid rgba(14,165,233,.13);}
+.qht{display:flex;justify-content:space-between;align-items:center;margin-bottom:.7rem;}
+.qhtitle{font-size:.95rem;font-weight:700;}
+.qhscore{font-size:.78rem;color:var(--sky);font-weight:700;background:rgba(14,165,233,.1);padding:.22rem .75rem;border-radius:20px;}
+.pbar{width:100%;height:5px;background:rgba(14,165,233,.1);border-radius:3px;overflow:hidden;}
+.pfill{height:100%;background:linear-gradient(90deg,var(--sky),var(--gold));border-radius:3px;transition:width .5s ease;}
+.qbody{padding:1.8rem;}
+.qnum{font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.45rem;}
+.qtext{font-size:1rem;font-weight:700;line-height:1.5;margin-bottom:1.3rem;}
+.qhint{font-size:.76rem;color:var(--muted);margin-bottom:1.1rem;font-style:italic;}
+.opts{display:flex;flex-direction:column;gap:.55rem;}
+.opt{background:rgba(14,165,233,.05);border:1px solid rgba(14,165,233,.16);border-radius:12px;padding:.8rem 1.1rem;cursor:pointer;font-size:.86rem;text-align:left;color:var(--text);transition:all .25s;font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;gap:.75rem;width:100%;}
+.olet{width:25px;height:25px;border-radius:7px;background:rgba(14,165,233,.1);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;color:var(--sky);flex-shrink:0;transition:all .25s;}
+.opt:hover:not(:disabled){background:rgba(14,165,233,.12);border-color:rgba(14,165,233,.5);transform:translateX(5px);}
+.opt:hover:not(:disabled) .olet{background:var(--sky);color:#fff;}
+.opt.correct{background:rgba(34,197,94,.1);border-color:#22C55E;color:#22C55E;}
+.opt.correct .olet{background:#22C55E;color:#fff;}
+.opt.wrong{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.35);color:#EF4444;}
+.opt.wrong .olet{background:rgba(239,68,68,.25);color:#EF4444;}
+.opt:disabled{cursor:default;}
+.qfb{margin-top:.9rem;padding:.85rem 1.1rem;border-radius:11px;font-size:.83rem;font-weight:600;display:none;}
+.qfb.show{display:block;}
+.fbc{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#22C55E;}
+.fbw{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#EF4444;}
+.qfoot{padding:0 1.8rem 1.8rem;display:flex;justify-content:space-between;align-items:center;}
+.qdots{display:flex;gap:.38rem;}
+.qd{width:8px;height:8px;border-radius:50%;background:rgba(14,165,233,.18);transition:all .4s;}
+.qd.dc{background:var(--green);}
+.qd.dw{background:var(--red);}
+.qd.cur{background:var(--sky);transform:scale(1.3);}
+.btnnext{background:linear-gradient(135deg,var(--sky),#0284C7);color:#fff;border:none;padding:.58rem 1.4rem;border-radius:50px;font-size:.81rem;font-weight:700;cursor:pointer;transition:all .3s;display:none;font-family:'Plus Jakarta Sans',sans-serif;}
+.btnnext.show{display:block;}
+.btnnext:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(14,165,233,.4);}
+.qres{display:none;padding:2.5rem;text-align:center;}
+.qres.show{display:block;}
+.remi{font-size:3.8rem;margin-bottom:.9rem;animation:pi .6s ease;}
+.rtitle{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;margin-bottom:.4rem;}
+.rsub{color:var(--muted);font-size:.93rem;margin-bottom:1.8rem;}
+.rbig{font-family:'Playfair Display',serif;font-size:4rem;font-weight:900;background:linear-gradient(135deg,var(--sky),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:.28rem;}
+.rlabel{font-size:.77rem;color:var(--muted);margin-bottom:1.8rem;}
+.rbreak{display:flex;gap:.9rem;justify-content:center;margin-bottom:1.8rem;flex-wrap:wrap;}
+.rb{background:rgba(14,165,233,.07);border:1px solid rgba(14,165,233,.16);border-radius:12px;padding:.75rem 1.1rem;min-width:90px;}
+.rb-n{font-size:1.5rem;font-weight:900;margin-bottom:.2rem;}
+.rb-l{font-size:.67rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
+.rb.rc .rb-n{color:var(--green);}
+.rb.rw .rb-n{color:var(--red);}
+.btnret{background:linear-gradient(135deg,var(--sky),#0284C7);color:#fff;border:none;padding:.72rem 1.9rem;border-radius:50px;font-size:.88rem;font-weight:700;cursor:pointer;transition:all .3s;font-family:'Plus Jakarta Sans',sans-serif;}
+.btnret:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(14,165,233,.4);}
+
+footer{text-align:center;padding:3rem;border-top:1px solid rgba(255,255,255,.05);color:var(--muted);font-size:.8rem;}
+.fl{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:900;background:linear-gradient(135deg,var(--sky),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:block;margin-bottom:.65rem;}
+
+@media(max-width:768px){
+  nav{padding:1rem 1.5rem;}
+  .nav-links{display:none;}
+  .sec{padding:4rem 1.5rem;}
+  .pgrid,.sol-wrap,.igrid,.tgrid{grid-template-columns:1fr;}
+  .ic.big{grid-row:auto;}
+  .steps{grid-template-columns:1fr 1fr;}
+  #hero{padding:6rem 1.5rem 3rem;}
+  .hstats{gap:1.5rem;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">JumisTab Студенті</div>
+  <ul class="nav-links">
+    <li><a href="#problem">Мәселе</a></li>
+    <li><a href="#solution">Шешім</a></li>
+    <li><a href="#how">Принципі</a></li>
+    <li><a href="#impact">Маңызы</a></li>
+    <li><a href="#team">Команда</a></li>
+    <li><a href="#quiz">Тест</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('solution').scrollIntoView({behavior:'smooth'})">Demo →</button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="grid-bg"></div>
+  <div class="hglow"></div><div class="hglow hglow2"></div>
+  <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+  <div class="hc">
+    <div class="hbadge"><span class="bdot"></span> Стартап Жоба · Қазақстан 2025</div>
+    <h1 class="htitle">Студенттің<br><span class="hl">Жұмыс Іздеуі</span><br>Енді Оңай</h1>
+    <p class="hsub">JumisTab Студенті — тек студенттерге арналған жұмыс пен тағылымдама платформасы. Кесте сыйымды, өтінімі жылдам, тек студенттік вакансиялар.</p>
+    <div class="hbtns">
+      <button class="btnp" onclick="document.getElementById('solution').scrollIntoView({behavior:'smooth'})">Платформаны Көру →</button>
+      <button class="btno" onclick="document.getElementById('problem').scrollIntoView({behavior:'smooth'})">Мәселе Туралы</button>
+    </div>
+    <div class="hstats">
+      <div class="st"><div class="sn">73%</div><div class="sl">Тәжірибесіз бітіруші</div></div>
+      <div class="st"><div class="sn">1.2М+</div><div class="sl">Студент ҚР-да</div></div>
+      <div class="st"><div class="sn">40%</div><div class="sl">Мамандығы бойынша жұмыс</div></div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- PROBLEM -->
+<div style="background:var(--dark);">
+<div class="sec reveal" id="problem">
+  <span class="slabel">🔍 Негізгі Мәселе</span>
+  <h2 class="stitle">Студенттік Жұмыс пен<br>Тағылымдаманың Мәселесі</h2>
+  <p class="sdesc">Қазақстанда жыл сайын мыңдаған студент дипломын алғанымен, еңбек нарығына даяр емес — тағылымдама жүйесі бұзылған.</p>
+  <div class="pgrid">
+    <div class="pc reveal"><div class="pci ir">🚫</div><h3>«Тәжірибе жоқ — жұмыс жоқ» айналымы</h3><p>Студент тағылымдамасыз тәжірибе жинай алмайды. Ал тағылымдамаға алу үшін тәжірибе талап етіледі. Бұл замкнутый шеңбер жастардың кәсіби дамуын тосқауылдайды.</p></div>
+    <div class="pc reveal"><div class="pci io">🔌</div><h3>Университет пен бизнес алшақтығы</h3><p>Оқу бағдарламалары нарықтан 3–5 жылға артта қалады. Бітірушілер теориясын біледі, бірақ практикалық дағдыдан мүлдем хабарсыз болады.</p></div>
+    <div class="pc reveal"><div class="pci iy">📍</div><h3>Географиялық теңсіздік</h3><p>Алматы мен Астанадан тыс аймақтардағы студенттерге мүмкіндік өте аз. Ірі компаниялар тек орталықта — провинциялық студенттер артта қалады.</p></div>
+    <div class="pc reveal"><div class="pci ip">🗓️</div><h3>Кесте сәйкессіздігі</h3><p>Күндізгі сабақ кестесі мен толық уақытты жұмыс сыйыспайды. Студент немесе оқудан, немесе жұмыстан бас тартуға мәжбүр болады.</p></div>
+    <div class="ph reveal">
+      <div class="ph-t">📊 Қазақстан Статистикасы</div>
+      <div class="ph-s">
+        <div><div class="ph-n">73%</div><div class="ph-l">Тәжірибесіз бітірушілер</div></div>
+        <div><div class="ph-n">58%</div><div class="ph-l">«Даяр кандидат жоқ» деген жұмыс берушілер</div></div>
+        <div><div class="ph-n">2–3 жыл</div><div class="ph-l">Жұмыс табуға кететін орташа уақыт</div></div>
+        <div><div class="ph-n">40%</div><div class="ph-l">Мамандығы бойынша жұмыс таба алатын бітірушілер</div></div>
+      </div>
+    </div>
+  </div>
+  <h3 style="font-size:1.15rem;font-weight:700;margin:2.5rem 0 1rem;" class="reveal">🔎 Тамыр Себептері</h3>
+  <ul class="clist">
+    <li class="ci reveal"><div class="cn">1</div><div class="ct"><strong>Ақпарат тапшылығы</strong><span>Студенттерге арналған бос жұмыс орындары, тәжірибеден өту бағдарламалары және қосымша табыс көздері әртүрлі платформаларда ретсіз орналасқан. Біртұтас база болмағандықтан, жастар көптеген мүмкіндіктерден кеш хабардар болады немесе мүлде білмей қалады.</span></div></li>
+    <li class="ci reveal"><div class="cn">2</div><div class="ct"><strong>Бағыт-бағдар беретін мамандардың аздығы</strong><span>Көп студент еңбек жолын қалай бастау керегін білмейді. Резюме құрастыру, сұхбатқа дайындалу, өз қабілетін дұрыс көрсету сияқты кезеңдерде кәсіби кеңес жетіспейді. Соның салдарынан жастар уақыт жоғалтып, сенімсіздікке тап болады.</span></div></li>
+    <li class="ci reveal"><div class="cn">3</div><div class="ct"><strong>Оқу мен жұмыстың сәйкес келмеуі</strong><span>Күндізгі бөлімде оқитын студент үшін толық жұмыс күніне шығу оңай емес. Сабақ уақыты мен жұмыс кестесі жиі қабыспайды. Ыңғайлы уақыттағы немесе қашықтан атқарылатын мүмкіндіктер аз болғандықтан, студент оқу мен табыстың бірін таңдауға мәжбүр болады.</span></div></li>
+    <li class="ci reveal"><div class="cn">4</div><div class="ct"><strong>Өтінім беру процесінің күрделілігі</strong><span>Әр мекемеге жеке құжат дайындау, мәліметтерді қайта енгізу, бірнеше кезеңнен өту көп уақыт пен күш талап етеді. Осындай қиындықтар студенттің белсенділігін төмендетіп, көптеген мүмкіндіктерге өтініш беруге кедергі жасайды.
+</span></div></li>
+    <li class="ci reveal"><div class="cn">5</div><div class="ct"><strong>Жұмыс беруші тарапынан сенімнің төмендігі</strong><span>Көп компаниялар тәжірибесі аз жастарды қабылдауға асықпайды. Себебі студенттің білімі мен қабілетін алдын ала бағалайтын нақты құралдар жеткіліксіз. Нәтижесінде жас мамандарға алғашқы қадам жасау қиындай түседі. этого хватит</span></div></li>
+  </ul>
+</div>
+</div>
+<div class="divider"></div>
+
+<!-- SOLUTION -->
+<section id="solution">
+<div class="sec">
+  <div class="reveal">
+    <span class="slabel">💡 Шешім</span>
+    <h2 class="stitle">JumisTab:<br>3 Негізгі Мүмкіндік</h2>
+    <p class="sdesc">Мәселенің дәл 3 тамыр себебін шешетін, студентке арналып жасалған платформа.</p>
+  </div>
+  <div class="sol-wrap">
+    <!-- PILLS -->
+    <div class="sol-pills reveal">
+      <div class="spill active" onclick="selectPill(0,this)">
+        <div class="spill-icon">🎓</div>
+        <div>
+          <div class="spill-title">Тек Студенттік Жұмыс / Тағылымдама</div>
+          <div class="spill-desc">Барлық вакансия тек студенттерге арналған. Толық уақытты тәжірибе талап ететін жарнама жоқ. IT, медицина, заң, дизайн, маркетинг — барлық сала бар. Студент ретінде «сен жаңадан бастаушысың» деп ешкім жоқ.</div>
+        </div>
+      </div>
+      <div class="spill" onclick="selectPill(1,this)">
+        <div class="spill-icon">🗓️</div>
+        <div>
+          <div class="spill-title">Кесте Бойынша Сүзгілеу</div>
+          <div class="spill-desc">Жартылай уақыттық (part-time), қашықтан (remote), демалыс күндері, кешкі уақыт — сабаққа кедергі жасамайтын жұмыстарды ғана көресің. Сабақ кестеңді енгізесің — автоматты сәйкестеу жасалады.</div>
+        </div>
+      </div>
+      <div class="spill" onclick="selectPill(2,this)">
+        <div class="spill-icon">⚡</div>
+        <div>
+          <div class="spill-title">Қарапайым Өтінім Беру Жүйесі</div>
+          <div class="spill-desc">Профиліңді бір рет толтырасың — CV автоматты жасалады. Кез келген жұмысқа бір басуда өтінім жіберіледі. Хат жазудың, форм толтырудың қажеті жоқ. Жылдам, оңай, студентке ыңғайлы.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BROWSER MOCKUP -->
+    <div class="reveal">
+      <div class="browser">
+        <div class="bbar">
+          <div class="bdots"><span class="bd"></span><span class="bd"></span><span class="bd"></span></div>
+          <div class="burl">🔒 <span>jumistab-student.kz</span>/вакансиялар</div>
+        </div>
+        <div class="abody" id="appBody">
+          <div class="anav">
+            <div class="alogo">JumisTab</div>
+            <div class="atabs">
+              <button class="atab on" onclick="switchTab('jobs',this)">Жұмыс</button>
+              <button class="atab" onclick="switchTab('intern',this)">Тағылымдама</button>
+              <button class="atab" onclick="switchTab('saved',this)">Сақталған ♡</button>
+            </div>
+          </div>
+          <div class="asearch">
+            <span style="color:var(--muted);font-size:.85rem">🔍</span>
+            <input type="text" placeholder="Жұмыс, компания немесе салаңды іздеңіз..." id="asr" oninput="filterJ()">
+          </div>
+          <div class="afilters">
+            <button class="fchip on" onclick="togF(this,'remote')">🌐 Қашықтан</button>
+            <button class="fchip on" onclick="togF(this,'part')">⏰ Part-time</button>
+            <button class="fchip" onclick="togF(this,'paid')">💰 Ақылы</button>
+            <button class="fchip" onclick="togF(this,'it')">💻 IT</button>
+            <button class="fchip" onclick="togF(this,'design')">🎨 Дизайн</button>
+            <button class="fchip" onclick="togF(this,'marketing')">📣 Маркетинг</button>
+          </div>
+          <div class="jlist" id="jlist">
+            <div class="jcard" onclick="openA(0)" data-t="remote part it">
+              <div class="jctop"><div class="jclogo" style="background:rgba(14,165,233,.15)">💻</div>
+              <div><div class="jcco">Kaspi.kz</div><div class="jctitle">Junior Frontend Developer (тағылымдама)</div></div></div>
+              <div class="jctags"><span class="jtag tr">Қашықтан</span><span class="jtag tp">Part-time</span><span class="jtag tt">IT</span></div>
+              <div class="jpay">80 000 ₸/ай</div></div>
+            <div class="jcard" onclick="openA(1)" data-t="part marketing">
+              <div class="jctop"><div class="jclogo" style="background:rgba(245,158,11,.15)">📣</div>
+              <div><div class="jcco">Kolesa Group</div><div class="jctitle">SMM Assistant — студент үшін</div></div></div>
+              <div class="jctags"><span class="jtag tp">Part-time</span><span class="jtag th">Маркетинг</span></div>
+              <div class="jpay">60 000 ₸/ай</div></div>
+            <div class="jcard" onclick="openA(2)" data-t="remote part design">
+              <div class="jctop"><div class="jclogo" style="background:rgba(168,85,247,.15)">🎨</div>
+              <div><div class="jcco">Chocofamily</div><div class="jctitle">UI/UX Design Intern</div></div></div>
+              <div class="jctags"><span class="jtag tr">Қашықтан</span><span class="jtag tp">Part-time</span><span class="jtag th">Дизайн</span></div>
+              <div class="jpay">Тегін тәжірибе</div></div>
+            <div class="jcard" onclick="openA(3)" data-t="part it paid">
+              <div class="jctop"><div class="jclogo" style="background:rgba(34,197,94,.15)">📊</div>
+              <div><div class="jcco">KPMG Kazakhstan</div><div class="jctitle">Data Analyst Intern — демалыс күндері</div></div></div>
+              <div class="jctags"><span class="jtag tp">Part-time</span><span class="jtag tt">IT</span><span class="jtag tp">Ақылы</span></div>
+              <div class="jpay">100 000 ₸/ай</div></div>
+            <div class="jcard" onclick="openA(4)" data-t="remote marketing paid">
+              <div class="jctop"><div class="jclogo" style="background:rgba(239,68,68,.15)">✍️</div>
+              <div><div class="jcco">Forbes Kazakhstan</div><div class="jctitle">Content Writer Intern</div></div></div>
+              <div class="jctags"><span class="jtag tr">Қашықтан</span><span class="jtag th">Маркетинг</span><span class="jtag tp">Ақылы</span></div>
+              <div class="jpay">50 000 ₸/ай</div></div>
+          </div>
+          <!-- APPLY OVERLAY -->
+          <div class="aovl" id="aovl">
+            <div class="aoh">
+              <div class="aot" id="aotitle">Өтінім беру</div>
+              <button class="aox" onclick="closeA()">✕</button>
+            </div>
+            <div id="aoform">
+              <div class="aolabel">Аты-жөніңіз</div>
+              <input class="aofield" type="text" placeholder="Мысалы: Айгерім Сейткали" id="aoname">
+              <div class="aolabel">Университет & Мамандық</div>
+              <input class="aofield" type="text" placeholder="КазНУ — Информатика, 3-курс" id="aouniv">
+              <div class="aolabel">Неге осы жұмыс? (2 сөйлем жетеді)</div>
+              <textarea class="aofield" rows="2" placeholder="Бұл тағылымдама маған..." id="aowhy"></textarea>
+              <button class="aosub" onclick="submitA()">⚡ Бір Басуда Өтінім Жібер</button>
+            </div>
+            <div class="aosucc" id="aosucc">
+              <div class="aosi">🎉</div>
+              <div style="font-size:.95rem;font-weight:700;margin-bottom:.4rem;">Өтінімің жіберілді!</div>
+              <div style="font-size:.8rem;color:var(--muted);">Компания 2 жұмыс күні ішінде жауап береді.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<div class="divider"></div>
+
+<div class="divider"></div>
+
+<!-- WHY DIFFERENT -->
+<div style="background:var(--dark);">
+<div class="sec reveal" id="difference">
+  <span class="slabel">🚀 Артықшылығымыз</span>
+  <h2 class="stitle">Неге JumisTab Басқалардан Ерекше?</h2>
+  <p class="sdesc">
+    Кәдімгі жұмыс платформаларынан айырмашылығымыз — біз тек студент мәселесіне бағытталған нақты шешім ұсынамыз. Көптеген платформалар жалпы аудиторияға арналған, сондықтан студенттердің нақты қиындықтары — тәжірибенің жоқтығы, уақыттың шектеулігі, ақпараттың шашыраңқылығы — толық шешілмейді. Ал JumisTab осы проблемаларды терең түсініп, арнайы студенттер үшін бейімделген жүйе ұсынады. Біздің мақсатымыз — тек жұмыс табу емес, студенттің кәсіби жолын жеңіл бастауына көмектесу.
+  </p>
+
+  <div class="pgrid">
+
+    <div class="pc reveal">
+      <div class="pci" style="background:rgba(14,165,233,.12);border:1px solid rgba(14,165,233,.25);">🧠</div>
+      <h3>Ақылды Сәйкестендіру (Smart Matching)</h3>
+      <p>
+        Студент өз сабақ кестесін енгізеді — платформа автоматты түрде сәйкес келетін жұмыстарды ұсынады. Уақытқа сай келмейтін вакансиялар мүлдем көрсетілмейді. Бұл студентке ұзақ іздеудің қажеті жоқ екенін білдіреді — жүйе өзі ең тиімді нұсқаларды фильтрлейді. Сонымен қатар, жүйе студенттің дағдылары мен қызығушылықтарын да ескере отырып, тек уақытқа емес, сапаға да негізделген ұсыныстар береді. Нәтижесінде студент оқуын бұзбай, өзіне ыңғайлы әрі пайдалы тәжірибе таба алады.
+      </p>
+    </div>
+
+    <div class="pc reveal">
+      <div class="pci" style="background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);">⭐</div>
+      <h3>Сенімділік Жүйесі (Trust System)</h3>
+      <p>
+        Студенттердің рейтингі, дағдылары және тәжірибесі арқылы жұмыс беруші олардың деңгейін тез бағалай алады. Бұл компаниялардың студенттерге деген сенімін арттырады. Әр студенттің белсенділігі, орындаған тапсырмалары, жобалары және алған тәжірибесі жүйеде көрініс табады. Осы арқылы жұмыс беруші тек резюмеге емес, нақты көрсеткіштерге сүйене отырып шешім қабылдайды. Бұл әдіс студент үшін өзін көрсетуге мүмкіндік берсе, компания үшін дұрыс кандидат табуды жеңілдетеді.
+      </p>
+    </div>
+
+    <div class="pc reveal">
+      <div class="pci" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);">🏛️</div>
+      <h3>Университет Интеграциясы</h3>
+      <p>
+        Университет жүйесімен байланыс арқылы студенттің профилі автоматты толтырылады. Курсы, мамандығы, жетістіктері — бәрі бірден дайын. Бұл студентке уақыт үнемдеуге мүмкіндік береді және профильдің дәлдігін арттырады. Сонымен қатар, университеттермен интеграция білім беру мен еңбек нарығы арасындағы байланысты күшейтеді. Нәтижесінде студенттерге ұсынылатын жұмыстар олардың оқу бағытымен тығыз байланысты болады, ал жұмыс берушілер нақты маманданған кандидаттарды таба алады.
+      </p>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div style="background:var(--dark);">
+<div class="sec reveal" id="how">
+  <span class="slabel">⚙️ Жұмыс Принципі</span>
+  <h2 class="stitle">4 Қадаммен<br>Тағылымдамаңды Тап</h2>
+  <div class="steps reveal">
+    <div class="step"><div class="stepn">01</div><div class="stepi">👤</div><h3>Профиль жасайсың</h3><p>Мамандығыңды, дағдыларыңды, тәжірибеңді, қызығушылықтарыңды толық енгізесің. Жүйе соның негізінде CV-ді өзі құрастырады. Профиль неғұрлым толық болса — соғұрлым көбірек ұсыныс ашылады.</p></div>
+    <div class="step"><div class="stepn">02</div><div class="stepi">🗓️</div><h3>Кестеңді таңдайсың</h3><p>Өзіңе сай форматты таңдайсың Part-time, remote немесе кешкі — бәрін өзің белгілейсің. Барлық адамға өзіне сай, қолайлы уақыт табуға көмектесеміз!</p></div>
+    <div class="step"><div class="stepn">03</div><div class="stepi">⚡</div><h3>Өтінім жібересің</h3><p>Көп компанияға бірден өтінім жібересің. Бір батырмамен CV, хат, портфолио бірден бірнеше компанияға кетеді. Уақыт үнемдейсің және мүмкіндіктер саны көбейеді. Бір жауап күтпейсің- паралель бірнеше процесс бірқатар жүреді.</p></div>
+    <div class="step"><div class="stepn">04</div><div class="stepi">🚀</div><h3>Жұмысқа кіресің</h3><p>Тәжірибе жинайсың және өсесің
+Қабылданғаннан кейін ментор беріледі. Ментор өзінің үлкен тәжірибиесімен бөліседі. Сонымен қатар, нақты тапсырмалар болады, прогресің көрініп тұрады. Бір тағылымдамамен тоқтамай, тәжірибені көбейтіп, келесі деңгейге шығуға нағыз мүмкіндік бар.</p></div>
+  </div>
+</div>
+</div>
+<div class="divider"></div>
+
+<div class="divider"></div>
+
+<!-- FUTURE OUTLOOK -->
+<div style="background:var(--darker);">
+<div class="sec reveal" id="future2">
+  <span class="slabel">🚀 Болашақ Мүмкіндіктер</span>
+  <h2 class="stitle">Платформаның Даму Бағыты</h2>
+  <p class="sdesc">
+    Болашақта біз JobLink платформасын одан әрі дамытуды жоспарлаймыз. Біздің басты мақсатымыз — студенттер мен жұмыс берушілер үшін ыңғайлы, жылдам және заманауи жүйе құру.
+  </p>
+
+  <div class="pgrid" style="margin-top:2rem;">
+
+    <div class="pc reveal">
+      <div class="pci" style="background:rgba(14,165,233,.12);border:1px solid rgba(14,165,233,.25);">⭐</div>
+      <h3>Студенттердің Рейтинг Жүйесі</h3>
+      <p>
+        Бұл жүйе студенттердің белсенділігіне, дағдыларына және тәжірибесіне негізделеді. 
+        Мысалы, студент қанша өтінім жіберді, қандай дағдылары бар, қандай жобаларға қатысты — осының бәрі есепке алынады. 
+        Нәтижесінде жұмыс беруші студенттің деңгейін тез түсінеді және дұрыс шешім қабылдай алады.
+      </p>
+    </div>
+
+    <div class="pc reveal">
+      <div class="pci" style="background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.25);">🤖</div>
+      <h3>Жасанды Интеллект Ұсыныстары</h3>
+      <p>
+        Жүйе әр студенттің профилін, қызығушылығын және кестесін талдап, оған ең сәйкес келетін жұмыс немесе тағылымдаманы автоматты түрде ұсынады. 
+        Студент ұзақ іздемейді — жүйе өзі көмектеседі. 
+        Бұл уақытты үнемдейді және жұмыс табуды жеңілдетеді.
+      </p>
+    </div>
+
+    <div class="pc reveal">
+      <div class="pci" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);">🏛️</div>
+      <h3>Университет Интеграциясы</h3>
+      <p>
+        Студент тіркелген кезде оның курсы, мамандығы және кейбір жетістіктері автоматты түрде профильге қосылады. 
+        Студентке бәрін қолмен жазудың қажеті болмайды. 
+        Бұл процесс жылдам әрі ыңғайлы болады.
+      </p>
+    </div>
+
+    <div class="pc reveal" style="grid-column:1/-1;">
+      <div class="pci" style="background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);">🌱</div>
+      <h3>Қосымша Даму Мүмкіндіктері</h3>
+      <p>
+        Болашақта біз студенттерге арналған қосымша мүмкіндіктерді енгіземіз: менторлармен байланыс, тәжірибе алу бойынша кеңестер және жеке даму ұсыныстары. 
+        Бұл студенттің тек жұмыс табуына ғана емес, жалпы кәсіби дамуына да көмектеседі.
+      </p>
+    </div>
+
+  </div>
+
+  <p class="sdesc" style="margin-top:2rem;">
+    Жалпы алғанда, біздің мақсатымыз — ақылды және тиімді платформа жасау. 
+    Бұл платформа студенттерге тез жұмыс табуға көмектеседі, ал компанияларға өзіне сәйкес кандидаттарды оңай табуға мүмкіндік береді.
+  </p>
+
+</div>
+</div>
+
+<!-- IMPACT -->
+<div class="sec reveal" id="impact">
+  <span class="slabel">🌍 Әлеуметтік Маңыз</span>
+  <h2 class="stitle">Қоғамға Беретін Пайдасы</h2>
+  <p class="sdesc">JumisTab Студенті — тек карьера платформасы емес. Қазақстанның болашағына инвестиция.</p>
+  <div class="igrid">
+    <div class="ic big reveal"><div class="itag tb">Ұлттық маңыз</div><div class="inum">2030</div><h3>Қазақстан Білімі 2030 Стратегиясы</h3><p>Бұл платформа жай ғана сайт емес, бұл — мемлекеттік деңгейдегі үлкен мақсаттарға қосылатын үлес. Біз «Жаңа Қазақстан» идеясын қолдай отырып, жастардың дипломмен емес, нақты біліктілікпен жұмыс табуына көмектесеміз. 2030 жылға қарай білім беру жүйесі мен еңбек нарығы арасындағы алшақтықты жойып, жастар арасындағы жұмыссыздықты түбегейлі азайтуды көздейміз.</p></div>
+    <div class="ic reveal"><div class="itag tg">Экономикалық пайда</div><h3>Жұмыссыздықты азайту</h3><p>Жастардың жұмыссыз отыруы — мемлекет үшін үлкен шығын. Жыл сайын триллиондаған теңге ЖІӨ-ге (ВВП) түспей қалады, себебі жас мамандар өз әлеуетін пайдалана алмай жүр. JumisTab осы мәселенің шешімі болып табылады: біз жастарды бос отырудан сақтап, оларды нарыққа пайда әкелетін маманға айналдырамыз. Бұл — ел экономикасына тікелей инвестиция.</p></div>
+    <div class="ic reveal"><div class="itag tgr">Гендерлік теңдік</div><h3>Қыздарға да тең мүмкіндік</h3><p>Кейде ата-аналар қыздарын басқа қалаға жіберуге немесе алысқа жұмысқа баруына алаңдап жатады. Біздің онлайн формат осы кедергіні бұзады. Қыздар үйінде отырып-ақ, қауіпсіз әрі жайлы ортада мықты мамандардан тәлім алып, тағылымдамадан өте алады. Бұл — әрбір арудың өзін кәсіби тұрғыда танытуына берілген үлкен мүмкіндік.</p></div>
+    <div class="ic reveal"><div class="itag tb">Аймақтық даму</div><h3>Өңірлер де дами алады</h3><p>Керемет жұмысқа орналасу үшін міндетті түрде Алматы немесе Астанаға көшудің қажеті жоқ. Шымкентте, Атырауда немесе Өскеменде отырып-ақ, еліміздің ең ірі компанияларында қашықтан тәжірибе жинауға болады. Біз цифрлық теңдікті орнатып, ауыл мен қала, орталық пен аймақ арасындағы мүмкіндіктерді теңестіреміз.</p></div>
+  </div>
+</div>
+<div class="divider"></div>
+
+
+
+<!-- TEAM -->
+<div style="background:var(--dark);">
+<div class="sec reveal" id="team">
+  <span class="slabel">👥 Команда</span>
+  <h2 class="stitle">Жобаны Жасаған 6 Студент</h2>
+  <p class="sdesc">Бізді бұл жобаға жетелеген — студент ретінде осы мәселені өзімізде сезінгенімізден.</p>
+  <div class="tgrid">
+    <div class="tc reveal"><div class="av">👩‍💼</div><h3>Ерзат Линза</h3><div class="tcr">Жоба Жетекшісі</div></div>
+    <div class="tc reveal"><div class="av">👩‍🎨</div><h3>Селиханова Сабина</h3><div class="tcr">UI/UX Дизайнер</div></div>
+    <div class="tc reveal"><div class="av">👨‍📊</div><h3>Жаналіұлы Аят</h3><div class="tcr">Зерттеуші / Аналитик</div></div>
+    <div class="tc reveal"><div class="av">👩‍💼</div><h3>Атайбекова Мадина</h3><div class="tcr">Бизнес Модель</div></div>
+    <div class="tc reveal"><div class="av">👨‍🔧</div><h3>Бақытжан Әмір</h3><div class="tcr">Зерттеуші / Аналитик</div></div>
+    <div class="tc reveal"><div class="av">👩‍🎤</div><h3>Бариев Рамазан</h3><div class="tcr">Зерттеуші / Аналитик</div></div>
+  </div>
+</div>
+</div>
+<div class="divider"></div>
+
+<!-- MEGA QUIZ -->
+<div id="quiz" style="background:var(--dark);">
+<div style="max-width:780px;margin:0 auto;padding:6rem 2rem;">
+  <div class="reveal" style="text-align:center;">
+    <span class="slabel">🧠 Аудиториямен Байланыс</span>
+    <h2 class="stitle" style="font-size:2.2rem;">Мини-Тест: Қаншалықты<br>Білесіз?</h2>
+    <p class="sdesc" style="margin:0 auto;text-align:center;">7 сұрақ · Нақты статистика · Бонус ақпарат — сынап көріңіз!</p>
+  </div>
+  <div class="qwrap reveal">
+    <div class="qhead" id="qhead">
+      <div class="qht">
+        <div class="qhtitle" id="qhtitle">Сұрақ 1 / 7</div>
+        <div class="qhscore" id="qhscore">⭐ 0 ұпай</div>
+      </div>
+      <div class="pbar"><div class="pfill" id="pfill" style="width:0%"></div></div>
+    </div>
+    <div class="qbody" id="qbody">
+      <div class="qnum" id="qnum">СҰРАҚ 1</div>
+      <div class="qtext" id="qtext"></div>
+      <div class="qhint" id="qhint"></div>
+      <div class="opts" id="qopts"></div>
+      <div class="qfb" id="qfb"></div>
+    </div>
+    <div class="qfoot" id="qfoot">
+      <div class="qdots" id="qdots"></div>
+      <button class="btnnext" id="btnnext" onclick="nextQ()">Келесі →</button>
+    </div>
+    <div class="qres" id="qres">
+      <div class="remi" id="remi"></div>
+      <div class="rtitle" id="rtitle"></div>
+      <div class="rsub" id="rsub"></div>
+      <div class="rbig" id="rbig"></div>
+      <div class="rlabel">дұрыс жауап / 7 сұрақтан</div>
+      <div class="rbreak">
+        <div class="rb rc"><div class="rb-n" id="rbc">0</div><div class="rb-l">Дұрыс ✓</div></div>
+        <div class="rb rw"><div class="rb-n" id="rbw">0</div><div class="rb-l">Қате ✗</div></div>
+        <div class="rb"><div class="rb-n" id="rbp" style="color:var(--sky)">0%</div><div class="rb-l">Нәтиже</div></div>
+      </div>
+      <button class="btnret" onclick="restartQ()">🔄 Қайта Тапсыру</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<footer>
+  <span class="fl">JumisTab Студенті</span>
+  <p>Студенттің Жұмыс Іздеуі — Енді Оңай</p>
+  <p style="margin-top:.5rem;">© 2025 JumisTab Startup Project · Стартап Жоба · Қазақстан 🇰🇿</p>
+</footer>
+
+<script>
+// REVEAL
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// PARALLAX
+document.addEventListener('mousemove',e=>{
+  const x=(e.clientX/window.innerWidth-.5)*18,y=(e.clientY/window.innerHeight-.5)*18;
+  document.querySelectorAll('.o1,.o2,.o3').forEach((o,i)=>{
+    o.style.transform=`translate(${x*(i+1)*.5}px,${y*(i+1)*.5}px)`;
+  });
+});
+
+// PILLS
+function selectPill(idx,el){
+  document.querySelectorAll('.spill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  // Highlight relevant filters in app
+  const maps=[null,['remote','part'],null];
+  if(maps[idx]){
+    aFilters=new Set(maps[idx]);
+    document.querySelectorAll('.fchip').forEach(fc=>{
+      const m=fc.getAttribute('onclick').match(/'([^']+)'/);
+      if(m)fc.classList.toggle('on',aFilters.has(m[1]));
+    });
+    filterJ();
+  }
+}
+
+// APP
+let aFilters=new Set(['remote','part']);
+function togF(el,tag){
+  el.classList.toggle('on');
+  aFilters.has(tag)?aFilters.delete(tag):aFilters.add(tag);
+  filterJ();
+}
+function filterJ(){
+  const q=(document.getElementById('asr').value||'').toLowerCase();
+  document.querySelectorAll('.jcard').forEach(c=>{
+    const tags=(c.dataset.t||'').split(' ');
+    const mf=aFilters.size===0||[...aFilters].every(f=>tags.includes(f));
+    const ms=!q||c.textContent.toLowerCase().includes(q);
+    c.style.display=(mf&&ms)?'block':'none';
+  });
+}
+const jData=[
+  {title:'Junior Frontend Developer (тағылымдама)',co:'Kaspi.kz'},
+  {title:'SMM Assistant',co:'Kolesa Group'},
+  {title:'UI/UX Design Intern',co:'Chocofamily'},
+  {title:'Data Analyst Intern',co:'KPMG Kazakhstan'},
+  {title:'Content Writer Intern',co:'Forbes Kazakhstan'},
+];
+function openA(idx){
+  const j=jData[idx]||{title:'Вакансия',co:'Компания'};
+  document.getElementById('aotitle').textContent=j.co+' — '+j.title;
+  document.getElementById('aoform').style.display='block';
+  document.getElementById('aosucc').classList.remove('show');
+  ['aoname','aouniv','aowhy'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('aovl').classList.add('show');
+  document.querySelectorAll('.jcard').forEach((c,i)=>c.classList.toggle('sel',i===idx));
+}
+function closeA(){document.getElementById('aovl').classList.remove('show');}
+function submitA(){
+  const n=document.getElementById('aoname').value.trim();
+  if(!n){document.getElementById('aoname').focus();return;}
+  document.getElementById('aoform').style.display='none';
+  document.getElementById('aosucc').classList.add('show');
+  setTimeout(closeA,2800);
+}
+function switchTab(tab,el){
+  document.querySelectorAll('.atab').forEach(a=>a.classList.remove('on'));
+  el.classList.add('on');
+  const jl=document.getElementById('jlist');
+  if(tab==='saved'){
+    jl.innerHTML='<div style="text-align:center;padding:2rem;color:var(--muted);font-size:.82rem;">💾 Сіз әзірге ештеңе сақтамадыңыз</div>';
+  } else if(tab==='intern'){
+    jl.innerHTML=`
+      <div class="jcard" onclick="openA(5)" data-t="remote part it">
+        <div class="jctop"><div class="jclogo" style="background:rgba(14,165,233,.15)">🏢</div>
+        <div><div class="jcco">Nazarbayev University</div><div class="jctitle">Research Assistant — жазғы тағылымдама</div></div></div>
+        <div class="jctags"><span class="jtag tr">Қашықтан</span><span class="jtag tp">Жазғы</span><span class="jtag tt">Зерттеу</span></div>
+        <div class="jpay">Стипендия</div></div>
+      <div class="jcard" onclick="openA(6)" data-t="part it paid">
+        <div class="jctop"><div class="jclogo" style="background:rgba(245,158,11,.15)">🏦</div>
+        <div><div class="jcco">Халық Банк</div><div class="jctitle">IT тағылымдамасы — 3 ай</div></div></div>
+        <div class="jctags"><span class="jtag tp">Part-time</span><span class="jtag tt">IT</span><span class="jtag tp">Ақылы</span></div>
+        <div class="jpay">90 000 ₸/ай</div></div>
+      <div class="jcard" onclick="openA(7)" data-t="remote part marketing">
+        <div class="jctop"><div class="jclogo" style="background:rgba(168,85,247,.15)">📱</div>
+        <div><div class="jcco">BI Group</div><div class="jctitle">Digital Marketing Intern</div></div></div>
+        <div class="jctags"><span class="jtag tr">Қашықтан</span><span class="jtag tp">Part-time</span><span class="jtag th">Маркетинг</span></div>
+        <div class="jpay">70 000 ₸/ай</div></div>`;
+  } else {
+    jl.innerHTML=`
+      <div class="jcard" onclick="openA(0)" data-t="remote part it"><div class="jctop"><div class="jclogo" style="background:rgba(14,165,233,.15)">💻</div><div><div class="jcco">Kaspi.kz</div><div class="jctitle">Junior Frontend Developer (тағылымдама)</div></div></div><div class="jctags"><span class="jtag tr">Қашықтан</span><span class="jtag tp">Part-time</span><span class="jtag tt">IT</span></div><div class="jpay">80 000 ₸/ай</div></div>
+      <div class="jcard" onclick="openA(1)" data-t="part marketing"><div class="jctop"><div class="jclogo" style="background:rgba(245,158,11,.15)">📣</div><div><div class="jcco">Kolesa Group</div><div class="jctitle">SMM Assistant — студент үшін</div></div></div><div class="jctags"><span class="jtag tp">Part-time</span><span class="jtag th">Маркетинг</span></div><div class="jpay">60 000 ₸/ай</div></div>
+      <div class="jcard" onclick="openA(2)" data-t="remote part design"><div class="jctop"><div class="jclogo" style="background:rgba(168,85,247,.15)">🎨</div><div><div class="jcco">Chocofamily</div><div class="jctitle">UI/UX Design Intern</div></div></div><div class="jctags"><span class="jtag tr">Қашықтан</span><span class="jtag tp">Part-time</span><span class="jtag th">Дизайн</span></div><div class="jpay">Тегін тәжірибе</div></div>
+      <div class="jcard" onclick="openA(3)" data-t="part it paid"><div class="jctop"><div class="jclogo" style="background:rgba(34,197,94,.15)">📊</div><div><div class="jcco">KPMG Kazakhstan</div><div class="jctitle">Data Analyst Intern — демалыс күндері</div></div></div><div class="jctags"><span class="jtag tp">Part-time</span><span class="jtag tt">IT</span><span class="jtag tp">Ақылы</span></div><div class="jpay">100 000 ₸/ай</div></div>
+      <div class="jcard" onclick="openA(4)" data-t="remote marketing paid"><div class="jctop"><div class="jclogo" style="background:rgba(239,68,68,.15)">✍️</div><div><div class="jcco">Forbes Kazakhstan</div><div class="jctitle">Content Writer Intern</div></div></div><div class="jctags"><span class="jtag tr">Қашықтан</span><span class="jtag th">Маркетинг</span><span class="jtag tp">Ақылы</span></div><div class="jpay">50 000 ₸/ай</div></div>`;
+    filterJ();
+  }
+}
+
+// ══════════ QUIZ ENGINE ══════════
+const QS=[
+  {q:"Қазақстанда студенттердің қанша пайызы мамандығы бойынша тағылымдама алмай бітіреді?",hint:"💡 Бұл сан ойлағаннан жоғары...",opts:["30%","50%","73%","85%"],c:2,fb:{r:"✅ Дұрыс! 73% — 10 студенттің 7-сі тәжірибесіз шығады. Алаңдаулы сан!",w:"❌ Дұрыс жауап: 73%. Қазақстанда студенттердің үштен екісі мамандандырылған тәжірибесіз бітіреді."}},
+  {q:"JumisTab Студентінің HH.kz немесе LinkedIn-нен НЕГІЗГІ айырмашылығы қандай?",hint:"💡 Платформаның атын оқыңыз...",opts:["Ақысыз қызмет","Тек студенттерге + кесте бойынша сүзгілеу","Жылдам интерфейс","Қазақ тілінде жазылған"],c:1,fb:{r:"✅ Өте дұрыс! Студентке арналған + кесте сыйымды сүзгілеу — бұл ешбір платформада жоқ!",w:"❌ Дұрыс жауап: Тек студенттерге + кесте бойынша сүзгілеу. HH.kz барлық категория үшін — бізде тек студенттік."}},
+  {q:"Студенттің жұмыс іздеудегі ең үлкен мәселесі қандай деп зерттеулер көрсетеді?",hint:"💡 «Тәжірибесіз алмайды, жұмыссыз тәжірибе жоқ» — бұл қандай мәселе?",opts:["Резюме жазу қиын","«Тәжірибе жоқ — жұмыс жоқ» айналымы","Ағылшын тілін білмеу","Университеттің рұқсат бермеуі"],c:1,fb:{r:"✅ Дәл! Бұл «chicken and egg» мәселесі. JumisTab дәл осыны шешеді — тәжірибесіз де қабылдайтын вакансиялар.",w:"❌ Дұрыс жауап: «Тәжірибе жоқ — жұмыс жоқ» айналымы — бұл барлық зерттеуде ең жиі аталатын кедергі."}},
+  {q:"Студент JumisTab арқылы вакансияға өтінім берген кезде не болады?",hint:"💡 «Қарапайым өтінім беру» деп қалай жарияладық?",opts:["Резюмесін PDF форматында жіберуі керек","Алдымен сұхбат өткізу керек","Бір басуда — CV автоматты жіберіледі","Email арқылы байланысуы керек"],c:2,fb:{r:"✅ Дұрыс! Профиль бір рет толтырылады — одан кейін барлық өтінімдер автоматты. Үлкен уақыт үнемдеу!",w:"❌ Дұрыс жауап: Бір басуда — CV автоматты жіберіледі. Профиль бір рет, өтінім — бір секунд."}},
+  {q:"«Кесте бойынша сүзгілеу» мүмкіндігі студентке НЕ береді?",hint:"💡 Сабақ кезінде жұмыс жасауға бола ма?",opts:["Жұмыс уақытын өзі белгілей алады","Сабаққа кедергі жасамайтын part-time/remote жұмыстарды ғана көреді","Жұмыс беруші кестені студентке бейімдейді","Оқудан демалыс алуға мүмкіндік береді"],c:1,fb:{r:"✅ Керемет! Part-time және remote жұмыстарды ғана көрсету — студенттің оқуын бұзбайтын жалғыз шешім!",w:"❌ Дұрыс жауап: Сабаққа кедергі жасамайтын жұмыстарды ғана көреді. Кесте сыйымдылық — JumisTab-тің негізі."}},
+  {q:"JumisTab Студентінің ӘЛЕУМЕТТІК маңызы қандай?",hint:"💡 Жеке пайдадан тыс, қоғамға не береді?",opts:["Студенттер бос уақытын толтыра алады","Мемлекет салық жинайды","Жастар жұмыссыздығын азайтып, экономикаға оң әсер береді","Университеттердің беделін арттырады"],c:2,fb:{r:"✅ Дұрыс! Жастар жұмыссыздығы ЖІӨ-ге үлкен зиян. JumisTab бұны шешу арқылы Қазақстан 2030 стратегиясын іске асырады!",w:"❌ Дұрыс жауап: Жастар жұмыссыздығын азайтып, экономикаға оң әсер береді — бұл нақты, өлшенетін әлеуметтік маңыз."}},
+  {q:"Егер Алматыда емес, Шымкентте тұратын студент болсаңыз, JumisTab не береді?",hint:"💡 «Қашықтан» деген сүзгі не үшін?",opts:["Ештеңе бермейді, тек Алматыда жұмыс","Шымкентте жергілікті жұмыс ұсынады","Алматы мен Астана компанияларында қашықтан жұмыс жасауға мүмкіндік","Тек онлайн оқыту курстары"],c:2,fb:{r:"✅ Дәл! Аймақтық теңдік — географиялық алшақтықты жою JumisTab-тің маңызды мақсаты. Қашықтан жұмыс мүмкіндігі барлығына тең.",w:"❌ Дұрыс жауап: Алматы мен Астана компанияларында қашықтан жұмыс. Remote опциясы аймақтық теңсіздікті жояды!"}}
+];
+let cQ=0,sc=0,ans=[];
+function initQ(){
+  cQ=0;sc=0;ans=[];
+  document.getElementById('qhead').style.display='';
+  document.getElementById('qbody').style.display='';
+  document.getElementById('qfoot').style.display='';
+  document.getElementById('qres').classList.remove('show');
+  renderQ();
+}
+function renderQ(){
+  const q=QS[cQ],tot=QS.length;
+  document.getElementById('qhtitle').textContent=`Сұрақ ${cQ+1} / ${tot}`;
+  document.getElementById('qhscore').textContent=`⭐ ${sc} ұпай`;
+  document.getElementById('pfill').style.width=`${(cQ/tot)*100}%`;
+  document.getElementById('qnum').textContent=`СҰРАҚ ${cQ+1}`;
+  document.getElementById('qtext').textContent=q.q;
+  const hi=document.getElementById('qhint');
+  hi.textContent=q.hint||''; hi.style.display=q.hint?'block':'none';
+  const lets=['А','Б','В','Г'];
+  document.getElementById('qopts').innerHTML=q.opts.map((o,i)=>
+    `<button class="opt" onclick="selA(${i})" id="op${i}"><span class="olet">${lets[i]}</span>${o}</button>`
+  ).join('');
+  document.getElementById('qfb').className='qfb';
+  document.getElementById('qfb').textContent='';
+  document.getElementById('btnnext').classList.remove('show');
+  document.getElementById('qdots').innerHTML=QS.map((_,i)=>{
+    let c='qd';
+    if(i<cQ)c+=ans[i]?' dc':' dw';
+    if(i===cQ)c+=' cur';
+    return `<span class="${c}"></span>`;
+  }).join('');
+}
+function selA(idx){
+  const q=QS[cQ],ok=idx===q.c;
+  if(ok)sc++;
+  ans[cQ]=ok;
+  document.querySelectorAll('.opt').forEach((b,i)=>{
+    b.disabled=true;
+    if(i===q.c)b.classList.add('correct');
+    else if(i===idx&&!ok)b.classList.add('wrong');
+  });
+  const fb=document.getElementById('qfb');
+  fb.textContent=ok?q.fb.r:q.fb.w;
+  fb.className='qfb show '+(ok?'fbc':'fbw');
+  document.getElementById('qhscore').textContent=`⭐ ${sc} ұпай`;
+  document.getElementById('btnnext').classList.add('show');
+}
+function nextQ(){
+  cQ++;
+  if(cQ>=QS.length)showRes();
+  else renderQ();
+}
+function showRes(){
+  document.getElementById('pfill').style.width='100%';
+  document.getElementById('qbody').style.display='none';
+  document.getElementById('qfoot').style.display='none';
+  const cor=ans.filter(Boolean).length,wr=QS.length-cor,pct=Math.round(cor/QS.length*100);
+  let em,ti,su;
+  if(pct>=85){em='🏆';ti='Сіз JumisTab Сарапшысыз!';su='Студенттік жұмыс мәселесін жетік біледі екенсіз. Бізбен бірге болыңыз!';}
+  else if(pct>=57){em='👍';ti='Жақсы Нәтиже!';su='Мәселені жақсы түсінесіз. Тағы бір рет тапсырып, 100% алыңыз!';}
+  else{em='🌱';ti='Үйрене берейік!';su='Жоғарыда толық ақпарат бар — оқып шығыңыз, сонда барлық сұрақты білесіз!';}
+  document.getElementById('remi').textContent=em;
+  document.getElementById('rtitle').textContent=ti;
+  document.getElementById('rsub').textContent=su;
+  document.getElementById('rbig').textContent=`${cor}/${QS.length}`;
+  document.getElementById('rbc').textContent=cor;
+  document.getElementById('rbw').textContent=wr;
+  document.getElementById('rbp').textContent=pct+'%';
+  document.getElementById('qres').classList.add('show');
+}
+function restartQ(){
+  document.getElementById('qbody').style.display='';
+  document.getElementById('qfoot').style.display='';
+  initQ();
+}
+initQ();
+</script>
+</body>
+</html>
